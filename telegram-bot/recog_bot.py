@@ -25,11 +25,11 @@ def recognize(message):
 		print(message.chat.id)
 
 
-		json_file = open('cifar10_arch.json','r')
+		json_file = open('model/cifar10_arch.json','r')
 		loaded_model_json = json_file.read()
 		json_file.close()
 		loaded_model = model_from_json(loaded_model_json)
-		loaded_model.load_weights('cifar10_weights.h5')
+		loaded_model.load_weights('model/cifar10_weights.h5')
 		optim = SGD()
 		
 		loaded_model.compile(loss='categorical_crossentropy', optimizer=optim, metrics=['accuracy'])
@@ -37,15 +37,15 @@ def recognize(message):
 		classes = ['Самолет','Автомобиль','Птица','Кот','Олень','Собакен','Лягушка','Лошадь','Корабль','Грузовик']
 
 		img_path = 'recog/'+path
-		# img = image.load_img(img_path, target_size=(32,32))
+		img = image.load_img(img_path, target_size=(32,32))
 
 		
-		# x = image.img_to_array(img)
-		# x /= 255
-		# x = np.expand_dims(x, axis=0)
-		img = np.transpose(scipy.misc.imresize(scipy.misc.imread(img_path),(32,32)),(1,0,2)).astype('float32')
-		img /= 255
-		img = image_utils.dim_ordering_fix(img.reshape((-1,1,28,28)))
+		x = image.img_to_array(img)
+		x /= 255
+		x = np.expand_dims(x, axis=0)
+		# img = np.transpose(scipy.misc.imresize(scipy.misc.imread(img_path),(32,32)),(1,0,2)).astype('float32')
+		# img /= 255
+		# img = image_utils.dim_ordering_fix(img.reshape((-1,1,28,28)))
 		prediction = loaded_model.predict(img)
 		#prediction = np_utils.categorical_probas_to_classes(prediction)
 		# bot.send_message(message.chat.id,)
